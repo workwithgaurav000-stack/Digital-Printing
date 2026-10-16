@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Print Receipt Token</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
+
+  <div class="w-full max-w-sm bg-white text-slate-800 rounded-3xl shadow-xl border border-slate-200 overflow-hidden relative">
+    
+    <div class="bg-blue-600 p-6 text-center text-white relative">
+      <div class="text-xs uppercase tracking-widest text-blue-100 font-bold">Print Token Number</div>
+      <h1 class="text-4xl font-black mt-1 tracking-tight" id="token">#PRT-0000</h1>
+      <p class="text-xs text-blue-100 mt-1">काउंटर पर यह टोकन नंबर बताएं</p>
+    </div>
+
+    <div class="p-6 space-y-4">
+      <div class="flex justify-between items-center text-xs text-slate-500 pb-3 border-b">
+        <span>ग्राहक का नाम:</span>
+        <span class="font-bold text-slate-900 text-sm" id="cName">-</span>
+      </div>
+
+      <div class="flex justify-between items-center text-xs text-slate-500 pb-3 border-b">
+        <span>तारीख और समय:</span>
+        <span class="font-semibold text-slate-700" id="dateTime">-</span>
+      </div>
+
+      <div class="bg-slate-50 p-3.5 rounded-2xl space-y-2 text-xs border border-slate-200/60">
+        <div class="flex justify-between">
+          <span class="text-slate-500">कुल पेजेस (Pages):</span>
+          <span class="font-bold text-slate-800" id="pages">0</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500">कॉपियां (Copies):</span>
+          <span class="font-bold text-slate-800" id="copies">0</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500">प्रिंट प्रकार:</span>
+          <span class="font-bold text-blue-600" id="pType">-</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500">साइड्स:</span>
+          <span class="font-bold text-slate-800" id="sides">-</span>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center p-4 bg-emerald-50 border border-emerald-200 rounded-2xl">
+        <div>
+          <span class="text-[11px] text-emerald-700 font-bold block uppercase">कुल भुगतान राशि</span>
+          <span class="text-2xl font-black text-emerald-600" id="total">₹0</span>
+        </div>
+        <i class="fa-solid fa-circle-check text-2xl text-emerald-500"></i>
+      </div>
+
+      <p class="text-[11px] text-center text-slate-400 mt-2">
+        <i class="fa-solid fa-shield-halved text-blue-500 mr-1"></i> आपकी फाइल सुरक्षित है और प्रिंट के बाद ऑटो-डिलीट हो जाएगी।
+      </p>
+    </div>
+
+    <div class="p-4 bg-slate-50 border-t border-slate-200 flex gap-2">
+      <button onclick="window.print()" class="flex-1 py-3 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold rounded-xl text-xs transition-all shadow-sm">
+        <i class="fa-solid fa-print mr-1"></i> सेव करें
+      </button>
+      <a href="/" class="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs text-center transition-all shadow-sm">
+        नया ऑर्डर दें
+      </a>
+    </div>
+
+  </div>
+
+  <script>
+    const orderData = localStorage.getItem('currentOrder');
+    if (orderData) {
+      const order = JSON.parse(orderData);
+      document.getElementById('token').innerText = order.orderId;
+      document.getElementById('cName').innerText = order.customerName;
+      document.getElementById('dateTime').innerText = `${order.date} | ${order.time}`;
+      document.getElementById('pages').innerText = order.totalPages;
+      document.getElementById('copies').innerText = order.copies;
+      document.getElementById('pType').innerText = order.printType === 'BW' ? 'Black & White' : 'Color';
+      document.getElementById('sides').innerText = order.sides;
+      document.getElementById('total').innerText = '₹' + order.totalAmount;
+    } else {
+      window.location.href = '/';
+    }
+  </script>
+
+</body>
+</html>
